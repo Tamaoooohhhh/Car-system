@@ -1,6 +1,4 @@
-node_modules
 dist
-.env
 server/.env
 .taste-skill
 shots
@@ -36,3 +34,4 @@ presentacion
 # Documentos internos
 PROMPT_MAESTRO.md
 PRODUCT.md
+
