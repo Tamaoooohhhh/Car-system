@@ -1,0 +1,34 @@
+node_modules
+dist
+.env
+server/.env
+.taste-skill
+shots
+
+# Carpetas de herramientas de IA
+.agents/
+.claude/
+.codex/
+.impeccable/
+skills-lock.json
+
+# Dependencias
+node_modules/
+
+# Logs
+*.log
+.dev.log
+.server.log
+
+# Editor
+.vscode/
+
+# Variables de entorno
+.env
+.env.*
+
+# Build
+dist/
+
+data/
+presentacion
