@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import SiteLayout from './components/SiteLayout.jsx'
+import AssessorLogin from './pages/AssessorLogin.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Catalogo from './pages/Catalogo.jsx'
 import Producto from './pages/Producto.jsx'
@@ -9,9 +10,6 @@ import Pago, { PagoExitoso } from './pages/Pago.jsx'
 import Talleres from './pages/Talleres.jsx'
 import PiezaEspecifica from './pages/PiezaEspecifica.jsx'
 import { ComoCotizamos, Garantia, Privacidad, NoEncontrada } from './pages/Info.jsx'
-
-// El CRM y la demo (con los datos reales) se cargan aparte: no pesan en la web pública.
-const Demo = lazy(() => import('./demo/Demo.jsx'))
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -40,14 +38,7 @@ export default function App() {
           <Route path="privacidad" element={<Privacidad />} />
           <Route path="*" element={<NoEncontrada />} />
         </Route>
-        <Route
-          path="demo/*"
-          element={
-            <Suspense fallback={<p className="p-8">Cargando la demo…</p>}>
-              <Demo />
-            </Suspense>
-          }
-        />
+        <Route path="asesores" element={<AssessorLogin />} />
       </Routes>
     </>
   )

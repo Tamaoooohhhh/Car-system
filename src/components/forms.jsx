@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, Copy, MessageCircle } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 import { enlaceWhatsApp } from '../lib/quote.jsx'
 import { empresa } from '../config/empresa'
 
@@ -44,9 +44,8 @@ export function Consentimiento({ checked, onChange, error }) {
   )
 }
 
-/** Envío: abre WhatsApp si el número está configurado; si no, ofrece copiar el mensaje. */
+/** Valida el formulario y abre WhatsApp con la solicitud. */
 export function Envio({ mensaje, onValidar, etiqueta = 'Enviar por WhatsApp' }) {
-  const [copiado, setCopiado] = useState(false)
   const [listo, setListo] = useState(false)
   const url = enlaceWhatsApp(mensaje)
 
@@ -55,13 +54,6 @@ export function Envio({ mensaje, onValidar, etiqueta = 'Enviar por WhatsApp' }) 
     setListo(true)
     if (url) window.open(url, '_blank', 'noopener')
   }
-  const copiar = async () => {
-    if (!onValidar()) return
-    try { await navigator.clipboard.writeText(mensaje) } catch { /* sin portapapeles */ }
-    setCopiado(true)
-    setListo(true)
-    setTimeout(() => setCopiado(false), 2500)
-  }
 
   return (
     <div className="grid gap-3">
@@ -69,14 +61,10 @@ export function Envio({ mensaje, onValidar, etiqueta = 'Enviar por WhatsApp' }) 
         <button type="button" className="btn btn-primary" onClick={enviar}>
           <MessageCircle size={18} aria-hidden="true" /> {etiqueta}
         </button>
-        <button type="button" className="btn btn-line" onClick={copiar}>
-          {copiado ? <Check size={18} aria-hidden="true" /> : <Copy size={18} aria-hidden="true" />}
-          {copiado ? 'Mensaje copiado' : 'Copiar el mensaje'}
-        </button>
       </div>
       {!url && (
         <p className="text-sm text-orange-ink bg-orange-tint rounded-md px-3 py-2" role="status">
-          El número de WhatsApp de CarSystem aún no está configurado (marcador editable en <span className="mono">src/config/empresa.js</span>). Por ahora puedes copiar el mensaje y enviarlo a un asesor.
+          El número de WhatsApp de CarSystem aún no está configurado. Puedes contactarnos por teléfono desde la sección de contacto.
         </p>
       )}
       {listo && url && <p className="text-sm text-ok" role="status">Abrimos WhatsApp con tu solicitud. Un asesor la confirmará en horario de atención.</p>}

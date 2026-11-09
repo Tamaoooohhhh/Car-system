@@ -27,10 +27,18 @@ node_modules/
 
 # Build
 dist/
+demo-dist/
+.firebase/
+functions-debug.log
+firebase-debug.log
+functions/private-demo-assets.generated.js
+functions/runtime-data.generated.js
+.dev.vars
+.dev.vars.*
+.wrangler/
 
 presentacion
 
 # Documentos internos
 PROMPT_MAESTRO.md
 PRODUCT.md
-

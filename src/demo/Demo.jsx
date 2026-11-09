@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { ArrowLeft, BarChart3, Boxes, Clock, CreditCard, Download, FileWarning, Inbox, LifeBuoy, Megaphone, MessagesSquare, Trash2, Users } from 'lucide-react'
+import { ArrowLeft, BarChart3, Boxes, Clock, CreditCard, Download, FileWarning, Inbox, LifeBuoy, LogOut, Megaphone, MessagesSquare, Trash2, Users } from 'lucide-react'
 import { demo, useDemo } from '../lib/demoStore.js'
 import { D, clientesEnriquecidos, interaccionesEnriquecidas, inventarioConAlertas } from '../lib/metrics.js'
 import { descargarCsv } from '../lib/csv.js'
@@ -81,6 +81,7 @@ export default function Demo() {
   const seccion = pathname.replace(/^\/demo\/?/, '').split('/')[0] || 'escenario'
   const [rol, setRol] = useState(() => localStorage.getItem('carsystem.rol') || 'gerencia')
   const [convId, setConvId] = useState(null)
+  const [logoutError, setLogoutError] = useState('')
   const { conversaciones, pedidos } = useDemo()
   const exportable = datosExportables(seccion, conversaciones, pedidos)
   useEffect(() => {
@@ -90,6 +91,18 @@ export default function Demo() {
 
   const visibles = SECCIONES.filter((s) => ROLES[rol].ver.includes(s.id))
   const permitido = ROLES[rol].ver.includes(seccion)
+
+  async function salir() {
+    setLogoutError('')
+    try {
+      const response = await fetch('/api/asesores/logout', { method: 'POST' })
+      if (!response.ok) throw new Error(`El servidor respondió ${response.status}`)
+      window.location.assign('/')
+    } catch (error) {
+      console.error('[assessor-logout]', error)
+      setLogoutError('No se pudo cerrar la sesión. Inténtalo otra vez.')
+    }
+  }
 
   const contenido = {
     escenario: <Escenario convId={convId} setConvId={setConvId} />,
@@ -109,7 +122,7 @@ export default function Demo() {
     <div className="min-h-screen bg-paper">
       <header className="bg-white border-b border-line sticky top-0 z-30">
         <div className="px-4 md:px-6 h-16 flex items-center gap-4">
-          <Link to="/" className="btn btn-sm btn-line"><ArrowLeft size={15} aria-hidden="true" /> Sitio</Link>
+          <a href="/" className="btn btn-sm btn-line"><ArrowLeft size={15} aria-hidden="true" /> Sitio</a>
           <img src="/logo.png" alt="CarSystem" className="h-10 w-auto hidden sm:block" />
           <div className="hidden md:block leading-tight">
             <p className="font-display font-bold">Demo del sistema interno</p>
@@ -124,6 +137,9 @@ export default function Demo() {
             </div>
             <button type="button" className="btn btn-sm btn-line" onClick={() => { if (confirm('¿Borrar las conversaciones y pedidos creados en esta demo?')) { demo.reiniciar(); setConvId(null) } }} title="Borrar los casos y pedidos creados en la demo">
               <Trash2 size={15} aria-hidden="true" /><span className="hidden lg:inline">Reiniciar demo</span>
+            </button>
+            <button type="button" className="btn btn-sm btn-line" onClick={salir} title="Cerrar la sesión de asesor">
+              <LogOut size={15} aria-hidden="true" /><span className="hidden lg:inline">Salir</span>
             </button>
           </div>
         </div>
@@ -141,6 +157,7 @@ export default function Demo() {
       </header>
 
       <main className="px-4 md:px-6 py-6 max-w-[1500px] mx-auto">
+        {logoutError && <p className="mb-4 text-sm text-bad" role="alert">{logoutError}</p>}
         <p className="text-xs text-muted mb-4">Vista simulada de <strong>{ROLES[rol].label}</strong>: es un filtro de presentación para la demo, no un sistema de permisos.</p>
         {!contenido ? (
           <p>Sección no encontrada. <Link className="link" to={`/demo/${visibles[0].id}`}>Ir a {visibles[0].label}</Link></p>

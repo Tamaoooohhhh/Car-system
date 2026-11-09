@@ -1,6 +1,6 @@
 // Convierte los CSV de /data a JSON tipado en /src/data.
 // - catalog.json: catálogo PÚBLICO (sin precio, costo, stock ni proveedor).
-// - crm.json: datos completos para el CRM demo (lazy-loaded por la app).
+// - crm.json: datos completos para la demo interna, servida desde el backend protegido.
 import fs from 'node:fs'
 import path from 'node:path'
 import Papa from 'papaparse'

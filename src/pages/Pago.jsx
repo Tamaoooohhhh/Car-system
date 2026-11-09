@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Banknote, CheckCircle2, CreditCard, Landmark, Loader2, Lock, MessageCircle, ShieldAlert } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, CreditCard, Landmark, Loader2, Lock, MessageCircle, ShieldAlert } from 'lucide-react'
 import { useQuote } from '../lib/quote.jsx'
 import { porSku } from '../lib/catalog'
 import { demo, useDemo } from '../lib/demoStore.js'
@@ -277,16 +277,11 @@ export function PagoExitoso() {
 
       <section className="mt-10" aria-labelledby="sigue-h">
         <h2 id="sigue-h" className="text-2xl">Qué sigue</h2>
-        <ol className="mt-4 grid gap-3 text-muted list-decimal pl-5">
-          <li>Un asesor revisa tu pedido y valida la compatibilidad con tu vehículo.</li>
-          <li>Te escribe al <span className="mono">{p.cliente.celular}</span> por WhatsApp para confirmar disponibilidad y despacho.</li>
-          <li>El pedido ya aparece en el sistema interno de CarSystem, con tus datos y el estado de atención.</li>
-        </ol>
+        <p className="mt-4 text-muted">Este es un flujo de demostración: no se envía un pedido real ni se transmiten tus datos a CarSystem. Para una compra real, solicita una cotización y un asesor confirmará precio, disponibilidad y entrega.</p>
       </section>
 
       <div className="mt-10 flex flex-wrap gap-3">
         <Link to="/catalogo" className="btn btn-dark">Seguir viendo el catálogo</Link>
-        <Link to="/demo/pedidos" className="btn btn-primary"><Banknote size={18} aria-hidden="true" /> Ver este pedido en el CRM</Link>
         <Link to="/" className="btn btn-line"><MessageCircle size={18} aria-hidden="true" /> Ir al inicio</Link>
       </div>
     </div>

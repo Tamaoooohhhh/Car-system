@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { ClipboardList, Menu, X } from 'lucide-react'
 import { empresa } from '../config/empresa'
 import { useQuote } from '../lib/quote.jsx'
+import AssistantWidget from './AssistantWidget.jsx'
 
 const NAV = [
   { to: '/catalogo', label: 'Catálogo' },
@@ -56,7 +57,6 @@ export default function SiteLayout() {
               {NAV.map((n) => (
                 <NavLink key={n.to} to={n.to} className={navClass} onClick={() => setOpen(false)}>{n.label}</NavLink>
               ))}
-              <NavLink to="/demo" className={navClass} onClick={() => setOpen(false)}>Demo del sistema interno</NavLink>
             </div>
           </nav>
         )}
@@ -90,7 +90,6 @@ export default function SiteLayout() {
             <ul className="text-sm space-y-1.5">
               <li><Link className="link" to="/garantia">Garantía</Link></li>
               <li><Link className="link" to="/privacidad">Privacidad y datos personales</Link></li>
-              <li><Link className="link" to="/demo">Demo del sistema interno</Link></li>
             </ul>
           </div>
         </div>
@@ -100,6 +99,7 @@ export default function SiteLayout() {
           </p>
         </div>
       </footer>
+      <AssistantWidget />
     </>
   )
 }

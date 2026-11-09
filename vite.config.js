@@ -4,9 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/Car-system/',
+  base: '/',
   server: {
     port: 5173,
-    proxy: { '/api': 'http://localhost:8787' },
+    proxy: {
+      '/api': 'http://localhost:8787',
+      '/demo': { target: 'http://localhost:8787', changeOrigin: true },
+    },
   },
 })

@@ -3,12 +3,23 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "data": "node scripts/build-data.mjs",
-    "dev": "npm run data && concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/index.mjs\"",
+    "dev": "npm run data && npm run build:demo && concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/index.mjs\"",
     "build": "npm run data && vite build",
+    "build:public": "npm run data && vite build --base=/",
+    "build:firebase": "npm run data && node scripts/build-firebase.mjs",
+    "build:demo": "npm run data && vite build --config vite.demo.config.js",
+    "build:all": "npm run build:public && npm run build:demo",
+    "build:pages": "npm run build:all && node scripts/build-pages.mjs",
+    "pages:dev": "npm run build:pages && wrangler pages dev dist",
     "preview": "vite preview",
-    "verify": "node scripts/verify-data.mjs"
+    "verify": "node scripts/verify-data.mjs",
+    "deploy": "npm run build:pages && wrangler pages deploy dist --project-name=carsystem-demo",
+    "deploy:firebase": "npm run build:firebase && firebase deploy --only hosting --project car-system-solution"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
@@ -27,6 +38,7 @@
     "concurrently": "^10.0.7",
     "papaparse": "^5.7.0",
     "tailwindcss": "^4.3.5",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "wrangler": "^4.77.0"
   }
 }

@@ -21,13 +21,14 @@ function ListaEjemplo() {
               <p className="font-semibold leading-tight truncate">{p.producto}</p>
               <p className="text-xs text-muted mono mt-0.5">{p.sku} · {p.referencia}</p>
             </div>
-            <span className="chip chip-warn shrink-0">Lo confirma el asesor</span>
+            <span className="chip chip-info shrink-0">En inventario</span>
           </li>
         ))}
       </ul>
       <div className="px-5 py-4 bg-paper rounded-b-xl grid gap-1 text-sm">
         <div className="flex justify-between"><span className="text-muted">Precio</span><span className="font-medium">En la cotización</span></div>
-        <div className="flex justify-between"><span className="text-muted">Disponibilidad y plazo</span><span className="font-medium">En la cotización</span></div>
+        <div className="flex justify-between"><span className="text-muted">Disponibilidad</span><span className="font-medium">En inventario</span></div>
+        <div className="flex justify-between"><span className="text-muted">Plazo de entrega</span><span className="font-medium">En la cotización</span></div>
       </div>
     </div>
   )
@@ -35,8 +36,8 @@ function ListaEjemplo() {
 
 const PASOS = [
   { Icon: ClipboardList, t: 'Arma tu lista', d: 'Elige las referencias del catálogo o cuéntanos qué necesitas. Si no conoces la referencia, dinos el vehículo.' },
-  { Icon: UserRoundCheck, t: 'Un asesor la revisa', d: 'Validamos la compatibilidad con tu vehículo y consultamos disponibilidad, también de piezas bajo pedido.' },
-  { Icon: ClipboardCheck, t: 'Recibes la cotización', d: 'Con precio, disponibilidad y plazo de entrega confirmados, por WhatsApp, teléfono o en el mostrador.' },
+  { Icon: UserRoundCheck, t: 'Un asesor te acompaña', d: 'La disponibilidad ya está registrada en el inventario. Si necesitas profundizar en un caso muy específico, un asesor puede ayudarte; para el resto, el chatbot te orienta sobre repuestos, compatibilidad y cotizaciones.' },
+  { Icon: ClipboardCheck, t: 'Recibes la cotización', d: 'Recibes el precio y el plazo de entrega por WhatsApp, teléfono o en el mostrador. La disponibilidad está en el inventario.' },
 ]
 
 export default function Inicio() {
@@ -49,7 +50,7 @@ export default function Inicio() {
               Repuestos para talleres y propietarios, cotizados por un asesor que conoce el oficio.
             </h1>
             <p className="mt-6 text-lg text-muted max-w-[56ch]">
-              Consulta las referencias que manejamos, arma tu lista y recibe una cotización con precio, disponibilidad y plazo confirmados. En Guayabal, Medellín, desde {empresa.fundacion}.
+              Consulta las referencias que manejamos, arma tu lista y recibe una cotización con precio y plazo de entrega. La disponibilidad está registrada en el inventario. En Guayabal, Medellín, desde {empresa.fundacion}.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/catalogo" className="btn btn-primary">Ver el catálogo <ArrowRight size={18} aria-hidden="true" /></Link>

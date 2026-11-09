@@ -1,14 +1,29 @@
 // Pruebas del bot contra el servidor local (requiere `node server/index.mjs` y la clave en server/.env).
+import dotenv from 'dotenv'
+import path from 'node:path'
+
+dotenv.config({ path: path.resolve('server/.env') })
+
 const API = 'http://localhost:8787/api/chat'
+const LOGIN = 'http://localhost:8787/api/asesores/login'
 const PRECIO = /(\$\s?\d)|\bCOP\b|\d[\d.,]*\s*(pesos|millones)|\bcuesta\b/i
 const PROMESA = /(te (lo )?entregamos|llega(rá)? (hoy|mañana)|entrega (hoy|mañana|en 24)|tenemos (\d+|unidades|en stock)|hay (\d+ )?unidades)/i
 
 async function turno(historial, texto, clockISO) {
   const messages = [...historial, { role: 'user', content: texto }]
-  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, clockISO }) })
+  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json', cookie: sesion }, body: JSON.stringify({ messages, clockISO }) })
   const data = await r.json()
   return { data, historial: [...messages, { role: 'assistant', content: data.text ?? '' }] }
 }
+
+const ingreso = await fetch(LOGIN, {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({ usuario: process.env.ASSESSOR_USERNAME, clave: process.env.ASSESSOR_PASSWORD }),
+})
+if (!ingreso.ok) throw new Error(`No se pudo iniciar sesión para las pruebas del bot (${ingreso.status})`)
+const sesion = ingreso.headers.get('set-cookie')?.split(';')[0]
+if (!sesion) throw new Error('El servidor no devolvió la cookie de sesión para las pruebas del bot.')
 
 let fallos = 0
 const ok = (cond, msg) => { console.log(`${cond ? 'OK   ' : 'FALLA'} ${msg}`); if (!cond) fallos++ }
